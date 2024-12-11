@@ -11,9 +11,7 @@ export function useUpdateSetting() {
       toast.success('Setting successfully updated');
       queryClient.invalidateQueries({ queryKey: ['cabins'] });
     },
-    onError: () => {
-      toast.error('Error updating setting');
-    },
+    onError: () => toast.error('Error updating setting'),
   });
 
   return { isUpdating, updateSetting };

@@ -9,14 +9,9 @@ export function useDeleteCabin() {
     mutationFn: deleteCabinApi,
     onSuccess: () => {
       toast.success('Cabin deleted successfully');
-
-      queryClient.invalidateQueries({
-        queryKey: ['cabins'],
-      });
+      queryClient.invalidateQueries({ queryKey: ['cabins'] });
     },
-    onError: (err) => {
-      toast.error(err.message);
-    },
+    onError: (err) => toast.error(err.message),
   });
 
   return { isDeleting, deleteCabin };

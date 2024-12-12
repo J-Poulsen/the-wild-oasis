@@ -1,10 +1,10 @@
 import { createContext, useContext, useState } from 'react';
-import { createPortal } from 'react-dom';
 import { HiEllipsisVertical } from 'react-icons/hi2';
 import styled from 'styled-components';
 import { useOutsideClick } from '../hooks/useOutsideClick';
 
 const Menu = styled.div`
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -30,8 +30,8 @@ const StyledToggle = styled.button`
 `;
 
 const StyledList = styled.ul`
-  position: fixed;
-
+  position: absolute;
+  z-index: 10;
   background-color: var(--color-grey-0);
   box-shadow: var(--shadow-md);
   border-radius: var(--border-radius-md);
@@ -69,7 +69,7 @@ const MenusContext = createContext();
 
 function Menus({ children }) {
   const [openId, setOpenId] = useState('');
-  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [position, setPosition] = useState(null);
 
   const close = () => setOpenId('');
   const open = setOpenId;
@@ -88,11 +88,7 @@ function Toggle({ id }) {
 
   function handleClick(e) {
     const rect = e.target.closest('button').getBoundingClientRect();
-
-    setPosition({
-      x: window.innerWidth - rect.width - rect.x,
-      y: rect.y + rect.height + 8,
-    });
+    setPosition({ x: -8, y: rect.height + 8 });
 
     openId === '' || openId !== id ? open(id) : close();
   }
@@ -110,11 +106,10 @@ function List({ id, children }) {
 
   if (openId !== id) return null;
 
-  return createPortal(
+  return (
     <StyledList position={position} ref={ref}>
       {children}
-    </StyledList>,
-    document.body,
+    </StyledList>
   );
 }
 

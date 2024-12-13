@@ -53,6 +53,11 @@ const StyledButton = styled.button`
   align-items: center;
   gap: 1.6rem;
 
+  /* Prevent overlapping text */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
   &:hover {
     background-color: var(--color-grey-50);
   }
